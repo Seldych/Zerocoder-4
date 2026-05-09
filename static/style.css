@@ -125,6 +125,29 @@ header p {
     transform: scale(0.97);
 }
 
+#pdf-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background: #4a6cf7;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.1s;
+}
+
+#pdf-btn:hover {
+    background: #3b5de7;
+}
+
+#pdf-btn:active {
+    transform: scale(0.97);
+}
+
 /* output card */
 .output-section {
     background: #fff;
@@ -133,12 +156,35 @@ header p {
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
 }
 
-.output-section label {
-    display: block;
+.output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.output-header label {
     font-weight: 600;
     font-size: 0.88rem;
     color: #2d3e8f;
-    margin-bottom: 10px;
+}
+
+#edit-toggle {
+    font-size: 0.8rem;
+    font-family: inherit;
+    padding: 4px 14px;
+    border: 1.5px solid #d6dae3;
+    border-radius: 6px;
+    background: #fafbfc;
+    color: #5a6170;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+#edit-toggle:hover {
+    background: #eef0f5;
+    border-color: #4a6cf7;
+    color: #2d3e8f;
 }
 
 #resume {
@@ -160,6 +206,23 @@ header p {
     outline: none;
     border-color: #4a6cf7;
     background: #fff;
+}
+
+#resume.editable {
+    background: #fff9f0;
+    border-color: #f5b042;
+}
+
+.char-count-wrapper {
+    text-align: right;
+    font-size: 0.8rem;
+    color: #8a91a0;
+    margin-top: 6px;
+}
+
+#char-count {
+    font-weight: 600;
+    color: #2d3e8f;
 }
 
 #resume::placeholder {

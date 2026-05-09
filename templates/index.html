@@ -52,12 +52,17 @@
                     </div>
 
                     <button type="submit" id="generate-btn">Сочинить</button>
+                    <button type="button" id="pdf-btn">Сохранить в PDF</button>
                 </form>
             </section>
 
             <section class="output-section">
-                <label for="resume">Резюме</label>
+                <div class="output-header">
+                    <label for="resume">Резюме</label>
+                    <button type="button" id="edit-toggle">Редактировать</button>
+                </div>
                 <textarea id="resume" rows="50" cols="50" readonly placeholder="Здесь появится сгенерированное резюме..."></textarea>
+                <div class="char-count-wrapper"><span id="char-count">0</span> символов</div>
             </section>
         </div>
     </div>

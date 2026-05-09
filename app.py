@@ -6,9 +6,12 @@ Flask-приложение для генерации резюме соискат
 которые выбираются случайным образом при каждой генерации.
 """
 
+import os
 import re
 import random
-from flask import Flask, render_template, request, jsonify
+import io
+from fpdf import FPDF
+from flask import Flask, render_template, request, jsonify, Response
 
 app = Flask(__name__)
 
@@ -1085,6 +1088,45 @@ def generate():
     resume_text = adjust_text_length(resume_text)
 
     return jsonify({'text': resume_text})
+
+
+@app.route('/download-pdf', methods=['POST'])
+def download_pdf():
+    """Принимает текст, возвращает PDF-файл для скачивания."""
+    if request.is_json:
+        text = request.get_json().get('text', '')
+    else:
+        text = request.form.get('text', '')
+
+    pdf = FPDF()
+    pdf.add_page()
+
+    font_candidates = [
+        'C:/Windows/Fonts/arial.ttf',
+        'C:/Windows/Fonts/calibri.ttf',
+        'C:/Windows/Fonts/times.ttf',
+        'C:/Windows/Fonts/segoeui.ttf',
+        'C:/Windows/Fonts/DejaVuSans.ttf',
+    ]
+    font_path = next((f for f in font_candidates if os.path.exists(f)), 'C:/Windows/Fonts/arial.ttf')
+    pdf.add_font('CustomFont', '', font_path)
+    pdf.set_font('CustomFont', '', 11)
+    pdf.set_auto_page_break(auto=True, margin=15)
+
+    pdf.multi_cell(0, 5.5, text)
+
+    buf = io.BytesIO()
+    pdf.output(buf)
+    buf.seek(0)
+
+    return Response(
+        buf.getvalue(),
+        mimetype='application/pdf',
+        headers={
+            'Content-Disposition': 'attachment; filename="resume.pdf"',
+            'Content-Length': str(buf.getbuffer().nbytes),
+        }
+    )
 
 
 if __name__ == '__main__':
