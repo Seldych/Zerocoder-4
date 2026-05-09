@@ -29,6 +29,40 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.removeChild(form);
     });
 
+    document.getElementById('vk-btn').addEventListener('click', function () {
+        var text = resumeOutput.value;
+        var vkStatus = document.getElementById('vk-status');
+
+        if (!text || text === 'Генерация...' || text === resumeOutput.placeholder) {
+            vkStatus.textContent = 'Сначала сгенерируйте резюме.';
+            vkStatus.className = 'vk-status vk-status-error';
+            return;
+        }
+
+        vkStatus.textContent = 'Публикация...';
+        vkStatus.className = 'vk-status';
+
+        fetch('/post-to-vk', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: text })
+        })
+            .then(function (res) { return res.json(); })
+            .then(function (result) {
+                if (result.error) {
+                    vkStatus.textContent = 'Ошибка: ' + result.error;
+                    vkStatus.className = 'vk-status vk-status-error';
+                } else {
+                    vkStatus.innerHTML = 'Опубликовано! <a href="' + result.url + '" target="_blank">Открыть пост</a>';
+                    vkStatus.className = 'vk-status vk-status-ok';
+                }
+            })
+            .catch(function () {
+                vkStatus.textContent = 'Ошибка сети. Попробуйте снова.';
+                vkStatus.className = 'vk-status vk-status-error';
+            });
+    });
+
     editToggle.addEventListener('click', function () {
         var isReadonly = resumeOutput.hasAttribute('readonly');
         if (isReadonly) {

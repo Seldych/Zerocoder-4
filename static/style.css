@@ -225,6 +225,66 @@ header p {
     color: #2d3e8f;
 }
 
+/* VK section */
+.vk-divider {
+    border: none;
+    border-top: 1.5px solid #d6dae3;
+    margin: 22px 0 18px;
+}
+
+.vk-section {
+    margin-top: 4px;
+}
+
+.vk-title {
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: #2d3e8f;
+    margin-bottom: 14px;
+}
+
+#vk-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    background: #0077ff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.1s;
+}
+
+#vk-btn:hover {
+    background: #0066dd;
+}
+
+#vk-btn:active {
+    transform: scale(0.97);
+}
+
+.vk-status {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.vk-status-error {
+    color: #d32f2f;
+}
+
+.vk-status-ok {
+    color: #2e7d32;
+}
+
+.vk-status a {
+    color: #0077ff;
+    text-decoration: underline;
+}
+
 #resume::placeholder {
     color: #a8aeb8;
 }

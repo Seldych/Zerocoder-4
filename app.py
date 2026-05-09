@@ -9,11 +9,21 @@ Flask-приложение для генерации резюме соискат
 import os
 import re
 import random
+import json
 import io
+import ssl
+import urllib.request
+import urllib.parse
 from fpdf import FPDF
 from flask import Flask, render_template, request, jsonify, Response
 
 app = Flask(__name__)
+
+try:
+    from config import VK_GROUP_ID, VK_TOKEN
+except ImportError:
+    VK_GROUP_ID = ''
+    VK_TOKEN = ''
 
 # ---------------------------------------------------------------------------
 # Шаблоны фраз — словарь вида: стиль → возраст → блок → [3 варианта]
@@ -1127,6 +1137,49 @@ def download_pdf():
             'Content-Length': str(buf.getbuffer().nbytes),
         }
     )
+
+
+@app.route('/post-to-vk', methods=['POST'])
+def post_to_vk():
+    """Публикует текст резюме на стене сообщества ВКонтакте."""
+    data = request.get_json()
+    text = data.get('text', '')
+
+    if not text:
+        return jsonify({'error': 'сначала сгенерируйте резюме'}), 400
+    if not VK_TOKEN or not VK_GROUP_ID:
+        return jsonify({'error': 'VK не настроен. Заполните VK_TOKEN и VK_GROUP_ID в config.py'}), 400
+
+    params = urllib.parse.urlencode({
+        'owner_id': f'-{VK_GROUP_ID}',
+        'message': text,
+        'access_token': VK_TOKEN,
+        'v': '5.131',
+    }).encode()
+
+    req = urllib.request.Request(
+        'https://api.vk.com/method/wall.post',
+        data=params,
+        headers={'Content-Type': 'application/x-www-form-urlencoded'}
+    )
+
+    try:
+        resp = urllib.request.urlopen(req, timeout=15, context=ssl._create_unverified_context())
+        result = json.loads(resp.read().decode('utf-8'))
+
+        if 'error' in result:
+            return jsonify({'error': result['error']['error_msg']}), 400
+
+        post_id = result.get('response', {}).get('post_id')
+        return jsonify({
+            'post_id': post_id,
+            'url': f'https://vk.com/public{VK_GROUP_ID}?w=wall-{VK_GROUP_ID}_{post_id}'
+        })
+
+    except urllib.error.URLError as e:
+        return jsonify({'error': f'ошибка сети: {e.reason}'}), 500
+    except Exception as e:
+        return jsonify({'error': f'неизвестная ошибка: {str(e)}'}), 500
 
 
 if __name__ == '__main__':
