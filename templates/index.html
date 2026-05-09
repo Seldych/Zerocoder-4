@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор резюме</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Генератор резюме</h1>
+            <p>Заполните форму — получите готовое резюме</p>
+        </header>
+
+        <div class="layout">
+            <section class="form-section">
+                <form id="resume-form">
+                    <div class="form-group">
+                        <label for="name">Имя</label>
+                        <input type="text" id="name" placeholder="Введите ваше имя" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vacancy">Название вакансии</label>
+                        <input type="text" id="vacancy" placeholder="Например: Python-разработчик" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="competencies">Актуальные компетенции</label>
+                        <input type="text" id="competencies" placeholder="Через запятую: Python, SQL, Django" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Возраст соискателя</label>
+                        <select id="age" required>
+                            <option value="" disabled selected>— выберите —</option>
+                            <option value="до 30 лет">до 30 лет</option>
+                            <option value="от 30 до 50 лет">от 30 до 50 лет</option>
+                            <option value="больше 50 лет">больше 50 лет</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="style">Стиль изложения</label>
+                        <select id="style" required>
+                            <option value="" disabled selected>— выберите —</option>
+                            <option value="серьезный">серьезный</option>
+                            <option value="остроумный">остроумный</option>
+                            <option value="безграмотный">безграмотный</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="generate-btn">Сочинить</button>
+                </form>
+            </section>
+
+            <section class="output-section">
+                <label for="resume">Резюме</label>
+                <textarea id="resume" rows="50" cols="50" readonly placeholder="Здесь появится сгенерированное резюме..."></textarea>
+            </section>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
