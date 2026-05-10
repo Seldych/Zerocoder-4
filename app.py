@@ -1116,9 +1116,22 @@ def download_pdf():
         'C:/Windows/Fonts/calibri.ttf',
         'C:/Windows/Fonts/times.ttf',
         'C:/Windows/Fonts/segoeui.ttf',
-        'C:/Windows/Fonts/DejaVuSans.ttf',
+        '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+        '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
+        '/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf',
+        '/usr/share/fonts/truetype/ubuntu/Ubuntu-R.ttf',
     ]
-    font_path = next((f for f in font_candidates if os.path.exists(f)), 'C:/Windows/Fonts/arial.ttf')
+    font_path = next((f for f in font_candidates if os.path.exists(f)), None)
+    if font_path is None:
+        for root, dirs, files in os.walk('/usr/share/fonts'):
+            for f in files:
+                if f.endswith('.ttf'):
+                    font_path = os.path.join(root, f)
+                    break
+            if font_path:
+                break
+    if font_path is None:
+        return jsonify({'error': 'не найден системный шрифт для PDF'}), 500
     pdf.add_font('CustomFont', '', font_path)
     pdf.set_font('CustomFont', '', 11)
     pdf.set_auto_page_break(auto=True, margin=15)
