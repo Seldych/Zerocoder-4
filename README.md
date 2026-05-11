@@ -22,3 +22,15 @@ python app.py
 ## Технологии
 
 Python, Flask, HTML, CSS, JavaScript
+
+## Примечание
+
+В репо отсутствует config.py
+Создать самостоятельно:
+
+```
+# Настройки VK
+# ID сообщества: число из URL (123456789)
+# Токен: создаётся в Управление → Работа с API → Создать ключ доступа
+VK_GROUP_ID = '123456789'  # Your VK ID
+VK_TOKEN = 'ddfkd23984rth48erhf*&7j^y548hjbw87jk'  # Your VK token
